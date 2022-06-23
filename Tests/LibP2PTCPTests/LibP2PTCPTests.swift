@@ -6,6 +6,6 @@ final class LibP2PTCPTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(LibP2PTCP().text, "Hello, World!")
+        //XCTAssertEqual(LibP2PTCP().text, "Hello, World!")
     }
 }
