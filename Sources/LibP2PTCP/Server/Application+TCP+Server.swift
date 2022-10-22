@@ -24,7 +24,7 @@ extension Application.Servers.Provider {
     }
 }
 
-extension Application.TCP {
+extension Application.TCP_Embedded {
     public var server: Server {
         .init(application: self.application)
     }

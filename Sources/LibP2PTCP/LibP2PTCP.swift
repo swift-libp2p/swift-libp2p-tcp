@@ -1,11 +1,10 @@
 
 import LibP2P
-import NIOPosix
 import Multiaddr
 import Multicodec
 
 // Install our TCP Tranport on the LibP2P Application
-public struct TCP: Transport {
+public struct TCP_Embedded: Transport {
     public static var key:String = "tcp"
     
     let application:Application

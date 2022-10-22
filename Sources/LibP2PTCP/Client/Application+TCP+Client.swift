@@ -17,7 +17,7 @@ extension Application.Clients.Provider {
     }
 }
 
-extension Application.TCP {
+extension Application.TCP_Embedded {
     public var client: Client {
         .init(application: self.application)
     }
