@@ -1,12 +1,12 @@
 //
 //  TCPClient.swift
-//  
 //
-//  Created by Brandon Toms on 3/19/22.
+//
+//  Created by Brandon Toms on 5/1/22.
 //
 
-import LibP2P
 import NIO
+import LibP2P
 import Logging
 
 public struct TCPClient:Client {
@@ -49,28 +49,6 @@ public struct TCPClient:Client {
     }
     
     public func execute(request: ClientRequest, eventLoop: EventLoop, logger: Logger?) -> EventLoopFuture<ClientResponse> {
-        guard let tcpAddress = request.addr.tcpAddress else {
-            return eventLoop.makeFailedFuture(Errors.invalidMultiaddrForTransport)
-        }
-//        client.connect(host: tcpAddress.address, port: tcpAddress.port).flatMap { channel -> EventLoopFuture<Connection> in
-//
-//            let conn = BasicConnectionLight(
-//                application: <#T##Application#>,
-//                logger: <#T##Logger#>,
-//                channel: <#T##Channel#>,
-//                localPeerID: <#T##PeerID#>,
-//                direction: <#T##ConnectionStats.Direction#>,
-//                remoteAddress: <#T##Multiaddr#>,
-//                expectedRemotePeer: <#T##PeerID?#>
-//            )
-//
-//            return conn.initializeChannel().flatMap { _ -> EventLoopFuture<Connection> in
-//                //self.onNewOutboundConnection(conn, multi).map { _ -> Connection in
-//                    return conn
-//                //}
-//            }
-//
-//        }
         return eventLoop.makeFailedFuture(Errors.notImplementedYet)
     }
     
