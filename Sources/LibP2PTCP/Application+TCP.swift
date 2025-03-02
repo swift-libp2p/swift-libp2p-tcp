@@ -28,7 +28,7 @@ extension Application.Transports.Provider {
     public static var tcp: Self {
         .init { app in
             app.transports.use(key: TCP_Embedded.key) {
-                TCP_Embedded(application: $0, protocols:[], proxy: false, uuid:UUID())
+                TCP_Embedded(application: $0, protocols: [], proxy: false, uuid: UUID())
             }
         }
     }
