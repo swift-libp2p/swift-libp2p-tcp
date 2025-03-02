@@ -1,24 +1,30 @@
+//===----------------------------------------------------------------------===//
 //
-//  TCPClient.swift
+// This source file is part of the swift-libp2p open source project
 //
+// Copyright (c) 2022-2025 swift-libp2p project authors
+// Licensed under MIT
 //
-//  Created by Brandon Toms on 5/1/22.
+// See LICENSE for license information
+// See CONTRIBUTORS for the list of swift-libp2p project authors
 //
+// SPDX-License-Identifier: MIT
+//
+//===----------------------------------------------------------------------===//
 
-import NIO
 import LibP2P
 import Logging
+import NIO
 
-public struct TCPClient:Client {
+public struct TCPClient: Client {
     public static var key: String = "TCPClient"
-    private let provider:NIOEventLoopGroupProvider
-    
+    private let provider: NIOEventLoopGroupProvider
+
     public let eventLoop: EventLoop
-    let client:ClientBootstrap
-    let group:EventLoopGroup
-    var logger:Logger?
-    
-    
+    let client: ClientBootstrap
+    let group: EventLoopGroup
+    var logger: Logger?
+
     init(
         eventLoopGroupProvider: NIOEventLoopGroupProvider,
         configuration: Configuration,
@@ -31,7 +37,7 @@ public struct TCPClient:Client {
         case .createNew:
             self.group = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
         }
-        
+
         self.logger = backgroundActivityLogger
         self.eventLoop = self.group.next()
         self.client = ClientBootstrap(group: self.group)
@@ -43,15 +49,19 @@ public struct TCPClient:Client {
                 channel.eventLoop.makeSucceededVoidFuture()
             }
     }
-    
+
     public func send(_ request: ClientRequest) -> EventLoopFuture<ClientResponse> {
         self.execute(request: request, eventLoop: self.group.next(), logger: self.logger)
     }
-    
-    public func execute(request: ClientRequest, eventLoop: EventLoop, logger: Logger?) -> EventLoopFuture<ClientResponse> {
-        return eventLoop.makeFailedFuture(Errors.notImplementedYet)
+
+    public func execute(
+        request: ClientRequest,
+        eventLoop: EventLoop,
+        logger: Logger?
+    ) -> EventLoopFuture<ClientResponse> {
+        eventLoop.makeFailedFuture(Errors.notImplementedYet)
     }
-    
+
     /// Shutdown the client
     public func syncShutdown() throws {
         self.logger?.trace("TCPClient: SyncShutdown Called")
@@ -62,29 +72,28 @@ public struct TCPClient:Client {
             try self.group.syncShutdownGracefully()
         }
     }
-    
+
     public func delegating(to eventLoop: EventLoop) -> Client {
         EventLoopTCPClient(tcp: self, eventLoop: eventLoop, logger: self.logger)
     }
-    
+
     public struct Configuration {
-        var example:String
-        
-        public init(example:String = "default") {
+        var example: String
+
+        public init(example: String = "default") {
             self.example = example
         }
     }
-    
-    public enum Errors:Error {
+
+    public enum Errors: Error {
         case notImplementedYet
         case invalidMultiaddrForTransport
     }
 }
 
-
 /// A TCP Client contrained to a particular EventLoop (useful for use within a request / route handler)
-public struct EventLoopTCPClient:Client {
-    public static let key:String = "ELTCPClient"
+public struct EventLoopTCPClient: Client {
+    public static let key: String = "ELTCPClient"
     public let tcp: TCPClient
     public let eventLoop: EventLoop
     var logger: Logger?
@@ -92,7 +101,7 @@ public struct EventLoopTCPClient:Client {
     public func send(
         _ request: ClientRequest
     ) -> EventLoopFuture<ClientResponse> {
-        return self.tcp.execute(
+        self.tcp.execute(
             request: request,
             eventLoop: self.eventLoop,
             logger: logger
@@ -104,6 +113,6 @@ public struct EventLoopTCPClient:Client {
     }
 
     public func logging(to logger: Logger) -> Client {
-        return EventLoopTCPClient(tcp: self.tcp, eventLoop: self.eventLoop, logger: logger)
+        EventLoopTCPClient(tcp: self.tcp, eventLoop: self.eventLoop, logger: logger)
     }
 }

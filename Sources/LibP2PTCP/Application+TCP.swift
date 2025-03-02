@@ -1,9 +1,16 @@
+//===----------------------------------------------------------------------===//
 //
-//  Application+TCP.swift
-//  
+// This source file is part of the swift-libp2p open source project
 //
-//  Created by Brandon Toms on 3/19/22.
+// Copyright (c) 2022-2025 swift-libp2p project authors
+// Licensed under MIT
 //
+// See LICENSE for license information
+// See CONTRIBUTORS for the list of swift-libp2p project authors
+//
+// SPDX-License-Identifier: MIT
+//
+//===----------------------------------------------------------------------===//
 
 import LibP2P
 
@@ -21,7 +28,7 @@ extension Application.Transports.Provider {
     public static var tcp: Self {
         .init { app in
             app.transports.use(key: TCP_Embedded.key) {
-                TCP_Embedded(application: $0, protocols:[], proxy: false, uuid:UUID())
+                TCP_Embedded(application: $0, protocols: [], proxy: false, uuid: UUID())
             }
         }
     }
