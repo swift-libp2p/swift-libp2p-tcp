@@ -15,9 +15,10 @@
 import LibP2P
 import Logging
 import NIO
+import NIOConcurrencyHelpers
 
-public struct TCPClient: Client {
-    public static var key: String = "TCPClient"
+public struct TCPClient: Client, @unchecked Sendable {
+    public static let key: String = "TCPClient"
     private let provider: NIOEventLoopGroupProvider
 
     public let eventLoop: EventLoop
@@ -77,15 +78,15 @@ public struct TCPClient: Client {
         EventLoopTCPClient(tcp: self, eventLoop: eventLoop, logger: self.logger)
     }
 
-    public struct Configuration {
-        var example: String
+    public struct Configuration: Sendable {
+        let example: NIOLockedValueBox<String>
 
         public init(example: String = "default") {
-            self.example = example
+            self.example = .init(example)
         }
     }
 
-    public enum Errors: Error {
+    public enum Errors: Error, Sendable {
         case notImplementedYet
         case invalidMultiaddrForTransport
     }

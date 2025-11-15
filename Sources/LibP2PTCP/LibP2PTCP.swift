@@ -17,8 +17,8 @@ import Multiaddr
 import Multicodec
 
 // Install our TCP Tranport on the LibP2P Application
-public struct TCP_Embedded: Transport {
-    public static var key: String = "tcp"
+public struct TCP_Embedded: Transport, @unchecked Sendable {
+    public static let key: String = "tcp"
 
     let application: Application
     public var protocols: [LibP2PProtocol]
@@ -84,7 +84,7 @@ public struct TCP_Embedded: Transport {
     public func canDial(address: Multiaddr) -> Bool {
         //address.tcpAddress != nil && !address.protocols().contains(.ws)
         guard let tcp = address.tcpAddress else { return false }
-        // Remove once we can dial ipv6 addresses
+        // TODO: Remove once we can dial ipv6 addresses
         guard tcp.ip4 else { return false }
         // Our TCP Client doesn't support WebSocket Upgrades...
         guard !address.protocols().contains(.ws) else { return false }
