@@ -15,13 +15,13 @@
 import LibP2P
 
 extension Application.Servers.Provider {
-    public static var tcp: Self {
+    public static var tcp_embedded: Self {
         .init {
             $0.servers.use { $0.tcp.server.shared }
         }
     }
 
-    public static func tcp(host: String, port: Int) -> Self {
+    public static func tcp_embedded(host: String, port: Int) -> Self {
         .init {
             $0.tcp.server.configuration = TCPServer.Configuration(
                 address: .hostname(host, port: port),
