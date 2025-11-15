@@ -12,15 +12,27 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
+import LibP2P
+import Testing
 
 @testable import LibP2PTCP
 
-final class LibP2PTCPTests: XCTestCase {
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        //XCTAssertEqual(LibP2PTCP().text, "Hello, World!")
+@Suite("Libp2p TCP Tests")
+struct LibP2PTCPTests {
+
+    @Test func testTCP() async throws {
+        let app = Application(.testing)
+
+        app.servers.use(.tcp_embedded)
+
+        try await app.startup()
+
+        #expect(app.environment == Environment.testing)
+        #expect(try app.listenAddresses == [Multiaddr("/ip4/127.0.0.1/tcp/10000")])
+
+        try await Task.sleep(for: .milliseconds(100))
+
+        try await app.asyncShutdown()
     }
+
 }
