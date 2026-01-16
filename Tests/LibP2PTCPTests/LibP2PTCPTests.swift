@@ -21,7 +21,7 @@ import Testing
 struct LibP2PTCPTests {
 
     @Test func testTCP() async throws {
-        let app = Application(.testing)
+        let app = try await Application.make(.detect(), peerID: .ephemeral())
 
         app.servers.use(.tcp_embedded)
 
